@@ -11,7 +11,7 @@ import java.util.concurrent.ForkJoinPool
 
 class Server {
     private var PORT: Int = 8080
-    private val BACKLOG = 6
+    private val BACKLOG = 120
     private var POOL_SIZE: Int = 2
     private var ROOTDIR = "/Users/rubenhovhannisyan/Desktop/http-test-suite-master"
     private val CONFIG_PATH = "/Users/rubenhovhannisyan/Desktop/HighloadServerKotlin/config.config"
@@ -48,13 +48,12 @@ class Server {
         FileManager.DOCUMENT_ROOT = ROOTDIR
         val serverSocket: ServerSocket
         try {
-            serverSocket = ServerSocket(PORT, BACKLOG)
+            serverSocket = ServerSocket(PORT)
         } catch (e: IOException) {
             println("Unable to start server")
             return
         }
 
-//        val pool = ForkJoinPool(POOL_SIZE * 2 + 1)
         val pool = MyThreadPool(POOL_SIZE)
         println("Server successfully started:" +
                 "\nPort Number: " + PORT +
