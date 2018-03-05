@@ -1,11 +1,7 @@
 package main
 
-import java.util.Queue
-import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.Executor
-
-class MyThreadPool(threadCount: Int) : Executor {
-    private val queue = ConcurrentLinkedQueue<Runnable>()
+class MyThreadPool(threadCount: Int) {
+    private val queue = ArrayList<Runnable>()
     @Volatile
     private var isRunning = true
 
@@ -15,9 +11,12 @@ class MyThreadPool(threadCount: Int) : Executor {
         }
     }
 
-    override fun execute(command: Runnable) {
-        if (isRunning) {
-            queue.offer(command)
+
+    fun execute(command: Runnable) {
+        synchronized(queue) {
+            if (isRunning) {
+                queue.add(command)
+            }
         }
     }
 
@@ -28,16 +27,19 @@ class MyThreadPool(threadCount: Int) : Executor {
     private inner class TaskWorker : Runnable {
 
         override fun run() {
-            while (isRunning) {
-                val nextTask = queue.poll()
-
-                try {
-                    if (nextTask != null) {
-                        nextTask.run()
+            while (!Thread.currentThread().isInterrupted) {
+                if (queue.isNotEmpty()) {
+                    var nextTask: Runnable? = null
+                    synchronized(queue) {
+                        if (queue.isNotEmpty()) {
+                            nextTask = queue.get(0)
+                            queue.removeAt(0)
+                        }
                     }
-                } catch (e: RuntimeException) {
-//                    isRunning = false;
-                    System.out.println("Server crashed : Threadpool couldnt get next task")
+                    try {
+                        nextTask!!.run()
+                    } catch (e: RuntimeException) {
+                    }
                 }
             }
         }
