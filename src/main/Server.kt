@@ -14,7 +14,7 @@ class Server {
     private val BACKLOG = 120
     private var POOL_SIZE: Int = 2
     private var ROOTDIR = "/Users/rubenhovhannisyan/Desktop/http-test-suite-master"
-    private val CONFIG_PATH = "/Users/rubenhovhannisyan/Desktop/HighloadServerKotlin/config.config"
+    private val CONFIG_PATH = "/Users/rubenhovhannisyan/Desktop/HighloadServerKotlin/httpd.conf"
 
     @Throws(IOException::class)
     fun readConfig() {
@@ -28,14 +28,14 @@ class Server {
             } catch (e: Exception) {
                 break;
             }
-            val maps = line.split(":".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
-            if (maps[0] == "PortNumber") {
+            val maps = line.split(" ".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+            if (maps[0] == "listen") {
                 PORT = Integer.parseInt(maps[1])
             }
-            if (maps[0] == "ThreadCount") {
+            if (maps[0] == "cpu_limit") {
                 POOL_SIZE = Integer.parseInt(maps[1])
             }
-            if (maps[0] == "RootDirectory") {
+            if (maps[0] == "document_root") {
                 ROOTDIR = maps[1]
             }
         }
@@ -58,7 +58,7 @@ class Server {
         println("Server successfully started:" +
                 "\nPort Number: " + PORT +
                 "\nRoot Directory: " + ROOTDIR +
-                "\nThread Count: " + POOL_SIZE)
+                "\nCPU Count: " + POOL_SIZE)
 
         while (true) {
             try {
