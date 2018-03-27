@@ -14,7 +14,7 @@ class Server {
     private val BACKLOG = 120
     private var POOL_SIZE: Int = 2
     private var ROOTDIR = "/Users/rubenhovhannisyan/Desktop/http-test-suite-master"
-    private val CONFIG_PATH = "/Users/rubenhovhannisyan/Desktop/HighloadServerKotlin/httpd.conf"
+    private val CONFIG_PATH = "./httpd.conf"
 
     @Throws(IOException::class)
     fun readConfig() {
