@@ -18,4 +18,4 @@ RUN mvn package
 
 EXPOSE 80
 
-CMD java -jar $WORK/java/target/highload-1.0-SNAPSHOT.jar
+CMD java -jar $WORK/java/target/highload-1.0-SNAPSHOT-jar-with-dependencies.jar
