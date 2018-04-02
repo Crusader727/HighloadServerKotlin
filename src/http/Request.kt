@@ -6,9 +6,7 @@ import java.net.URLDecoder
 
 class Request {
     var filePath: String? = null
-        private set
     var method: String? = null
-        private set
 
     fun newHeader(line: String) {
         val buf = getNameHeader(line)
