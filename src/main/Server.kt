@@ -31,7 +31,7 @@ class Server {
             if (maps[0] == "listen") {
                 PORT = Integer.parseInt(maps[1])
             }
-            if (maps[0] == "cpu_limit") {
+            if (maps[0] == "thread_limit") {
                 POOL_SIZE = Integer.parseInt(maps[1])
             }
             if (maps[0] == "document_root") {
@@ -57,7 +57,7 @@ class Server {
         println("Server successfully started:" +
                 "\nPort Number: " + PORT +
                 "\nRoot Directory: " + ROOTDIR +
-                "\nCPU Count: " + POOL_SIZE)
+                "\nTHREAD Count: " + POOL_SIZE)
 
         while (true) {
             try {
